@@ -5,7 +5,7 @@ using KrylovKit
 include("reshape_tensor.jl")
 include("conjugate_tensor.jl")
 
-Nv=6;#options: 4,6,8
+Nv=8;#options: 4,6,8
 D=3;
 
 b=SparseArray{ComplexF64}(undef, (3,3,2));
