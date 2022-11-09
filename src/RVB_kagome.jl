@@ -39,6 +39,7 @@ println(varinfo(r"Unitary_phy"))
 # (Tensor_to_be_reshaped, first_dimension, second_dimension)
 A_reshaped = reshape_tensor(A,5,7)
 
+A_again = reshape_tensor(A_reshaped,5,(2,4))
 
 
 # # TODO Do the reshape function from this code. From many indexes to One
