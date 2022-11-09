@@ -41,24 +41,24 @@ A_reshaped = reshape_tensor(A,5,7)
 
 
 
-# TODO Do the reshape function from this code. From many indexes to One
-A_keys = nonzero_keys(A)
-A_reshaped=SparseArray{ComplexF64}(undef, (3,3,3,3,8));
-size(A)
+# # TODO Do the reshape function from this code. From many indexes to One
+# A_keys = nonzero_keys(A)
+# A_reshaped=SparseArray{ComplexF64}(undef, (3,3,3,3,8));
+# size(A)
 
-#TODO esto es para el (from one to many)
-key_dict = Matrix{Int}(undef, (8,3))
-for key in A_keys
-    # println(key)
-    value = A[key]
+# #TODO esto es para el (from one to many)
+# key_dict = Matrix{Int}(undef, (8,3))
+# for key in A_keys
+#     # println(key)
+#     value = A[key]
     
-    mapping = range(1, stop=8, length=8)
-    mapping = reshape(mapping, 2,2,2)
-    new_key = Int(mapping[key[5],key[6],key[7]])
+#     mapping = range(1, stop=8, length=8)
+#     mapping = reshape(mapping, 2,2,2)
+#     new_key = Int(mapping[key[5],key[6],key[7]])
 
-    #TODO esto es para el (from one to many)
-    key_dict[new_key, 1:3] = [key[5],key[6],key[7]]
-    # println(value, " ", new_key)
-    A_reshaped[key[1],key[2],key[3],key[4], new_key] = value
-    # print(key[1])
-end
+#     #TODO esto es para el (from one to many)
+#     key_dict[new_key, 1:3] = [key[5],key[6],key[7]]
+#     # println(value, " ", new_key)
+#     A_reshaped[key[1],key[2],key[3],key[4], new_key] = value
+#     # print(key[1])
+# end
