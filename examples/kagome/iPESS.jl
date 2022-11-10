@@ -23,22 +23,22 @@ function construct_tensor(D,is_sparse)
 
     for cm=1:length(A_set)
         A_set_occu[cm]=A_set[cm]["sectors"]
-        A_set[cm]=sparse_copy(A_set[cm]["tensor"])
+        A_set[cm]=sparse_copy(A_set[cm]["tensor"],is_sparse)
     end
 
     for cm=1:length(B_set)
         B_set_occu[cm]=B_set[cm]["sectors"]
-        B_set[cm]=sparse_copy(B_set[cm]["tensor"])
+        B_set[cm]=sparse_copy(B_set[cm]["tensor"],is_sparse)
     end
 
     for cm=1:length(A1_set)
         A1_set_occu[cm]=A1_set[cm]["sectors"]
-        A1_set[cm]=sparse_copy(A1_set[cm]["tensor"])
+        A1_set[cm]=sparse_copy(A1_set[cm]["tensor"],is_sparse)
     end
 
     for cm=1:length(A2_set)
         A2_set_occu[cm]=A2_set[cm]["sectors"]
-        A2_set[cm]=sparse_copy(A2_set[cm]["tensor"])
+        A2_set[cm]=sparse_copy(A2_set[cm]["tensor"],is_sparse)
     end;
     
     return A_set,B_set,A1_set,A2_set, A_set_occu,B_set_occu,A1_set_occu,A2_set_occu, S_label, Sz_label, virtual_particle;
