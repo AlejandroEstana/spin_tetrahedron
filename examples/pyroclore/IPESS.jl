@@ -1,47 +1,40 @@
 using MAT
-
+using MAT
+using TensorKit
 function construct_tensor(D,is_sparse)
     #D=3
     filenm="bond_tensors_D_"*string(D)*".mat"
     vars = matread(filenm)
     A_set=vars["A_set"][1,:]
     A_set_occu=Vector(undef,length(A_set))
-    B_set=vars["B_set"][1,:]
-    B_set_occu=Vector(undef,length(B_set))
     S_label=vars["S_label"][1,:]
     Sz_label=vars["Sz_label"][1,:]
     virtual_particle=vars["virtual_particle"][1,:]
     #typeof(A_set[1]["tensor"])
 
-    filenm="triangle_tensors_D_"*string(D)*".mat"
+    filenm="Tetrahedral_tensors_D_"*string(D)*".mat"
     vars = matread(filenm)
-    A1_set=vars["A1_set"][1,:]
-    A1_set_occu=Vector(undef,length(A1_set))
-    A2_set=vars["A2_set"][1,:]
-    A2_set_occu=Vector(undef,length(A2_set))
+    E_set=vars["E_set"][1,:]
+    E_set_occu=Vector(undef,length(E_set))
+    Va=[]
+    Vb=[]
 
     for cm=1:length(A_set)
         A_set_occu[cm]=A_set[cm]["sectors"]
         A_set[cm]=sparse_copy(A_set[cm]["tensor"],is_sparse)
     end
 
-    for cm=1:length(B_set)
-        B_set_occu[cm]=B_set[cm]["sectors"]
-        B_set[cm]=sparse_copy(B_set[cm]["tensor"],is_sparse)
+
+
+    for cm=1:length(E_set)
+        E_set_occu[cm]=E_set[cm]["sectors"]
+        E_set[cm]=sparse_copy(E_set[cm]["tensor"],is_sparse)
     end
 
-    for cm=1:length(A1_set)
-        A1_set_occu[cm]=A1_set[cm]["sectors"]
-        A1_set[cm]=sparse_copy(A1_set[cm]["tensor"],is_sparse)
-    end
-
-    for cm=1:length(A2_set)
-        A2_set_occu[cm]=A2_set[cm]["sectors"]
-        A2_set[cm]=sparse_copy(A2_set[cm]["tensor"],is_sparse)
-    end
     
-    return A_set,B_set,A1_set,A2_set, A_set_occu,B_set_occu,A1_set_occu,A2_set_occu, S_label, Sz_label, virtual_particle;
+    return A_set,E_set, S_label, Sz_label, virtual_particle, Va, Vb;
 end;
+
 
 function read_json_state(filenm)
     json_dict = Dict()
