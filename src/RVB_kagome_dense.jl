@@ -73,13 +73,13 @@ elseif Nv==8
     @tensor v0[:]:=AA_closed[1,-1,8]*AA_closed[2,-2,1]*AA_closed[3,-3,2]*AA_closed[4,-4,3]*AA_closed[5,-5,4]*AA_closed[6,-6,5]*AA_closed[7,-7,6]*AA_closed[8,-8,7];
 end
 v0=reshape(v0,prod(size(v0)));
-
+println(varinfo(r"v0"))
 
 
 Tx_fun(x)=transfer_operator_fun_econ(x,A_fused,Nv,D);
-@time euL,evL,info=eigsolve(Tx_fun, v0, 1,:LM, Arnoldi(krylovdim=10, tol=1e-14));
+# @time euL,evL,info=eigsolve(Tx_fun, v0, 1,:LM, Arnoldi(krylovdim=10, tol=1e-14));
 
-print(euL)
+# print(euL)
 
 
 
