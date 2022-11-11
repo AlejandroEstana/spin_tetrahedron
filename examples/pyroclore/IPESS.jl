@@ -12,7 +12,7 @@ function construct_tensor(D,is_sparse)
     virtual_particle=vars["virtual_particle"][1,:]
     #typeof(A_set[1]["tensor"])
 
-    filenm="Tetrahedral_tensors_D_"*string(D)*".mat"
+    filenm="tetrahedral_tensors_D_"*string(D)*".mat"
     vars = matread(filenm)
     E_set=vars["E_set"][1,:]
     E_set_occu=Vector(undef,length(E_set))
