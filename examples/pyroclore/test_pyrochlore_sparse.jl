@@ -11,19 +11,10 @@ include("D:\\My Documents\\Code\\Julia_codes\\Tensor network\\sparse tensor\\spi
 cd("D:\\My Documents\\Code\\Julia_codes\\Tensor network\\sparse tensor\\spin_tetrahedron\\examples\\pyroclore\\")
 include("iPESS.jl")
 
-
-
-
-
-
 Random.seed!(1234)
 
-
+cluster_size="3x3x3"
 D=2;
-
-
-
-
 is_sparse=true;
 Bond_irrep="A";
 Tetrahedral_irrep="E";
@@ -82,17 +73,30 @@ double_PEPS_dense=Array(double_PEPS);
 println(varinfo(r"double_PEPS_dense"))
 println(varinfo(r"double_PEPS"))
 
-# 2X2X2 cluster
-@tensor layer_2D[u1,u2,u3,u4,d1,d2,d3,d4]:=double_PEPS[2,5,1,6,u1,d1]*double_PEPS[1,7,2,8,u2,d2]*double_PEPS[4,6,3,5,u3,d3]*double_PEPS[3,8,4,7,u4,d4];
-layer_2D_dense=Array(layer_2D);
-println(varinfo(r"layer_2D_dense"))
-println(varinfo(r"layer_2D"))
-sparse_rate=length(nonzero_keys(layer_2D))/prod(size(layer_2D))
-println("Sparse rate: "*string(sparse_rate))
+if cluster_size=="2x2x2"
+    @tensor layer_2D[u1,u2,u3,u4,d1,d2,d3,d4]:=double_PEPS[2,5,1,6,u1,d1]*double_PEPS[1,7,2,8,u2,d2]*double_PEPS[4,6,3,5,u3,d3]*double_PEPS[3,8,4,7,u4,d4];
+    layer_2D_dense=Array(layer_2D);
+    println(varinfo(r"layer_2D_dense"))
+    println(varinfo(r"layer_2D"))
+    sparse_rate=length(nonzero_keys(layer_2D))/prod(size(layer_2D))
+    println("Sparse rate: "*string(sparse_rate))
 
-@tensor Norm_3D[:]:=layer_2D[5,6,7,8,1,2,3,4]*layer_2D[1,2,3,4,5,6,7,8];
-
-
+    @tensor Norm_3D[:]:=layer_2D[5,6,7,8,1,2,3,4]*layer_2D[1,2,3,4,5,6,7,8];
+elseif cluster_size=="3x3x3"
+    @tensor cluster_3x1[w1,w2,w3,e1,e2,e3,u1,u2,u3,d1,d2,d3]:=double_PEPS[w1,1,e1,3,u1,d1]*double_PEPS[w2,2,e2,1,u2,d2]*double_PEPS[w3,3,e3,2,u3,d3];
+    cluster_3x1=reshape_tensor(cluster_3x1,10,12);
+    cluster_3x1=reshape_tensor(cluster_3x1,7,9);
+    cluster_3x1=reshape_tensor(cluster_3x1,4,6);
+    cluster_3x1=reshape_tensor(cluster_3x1,1,3);
+    println(varinfo(r"cluster_3x1"))
+    println("Sparse rate of cluster_3x1: "*string(length(nonzero_keys(cluster_3x1))/prod(size(cluster_3x1))))
+    
+    comp=1;
+    cluster_3x1_comp=cluster_3x1[comp,:,:,:];
+    @tensor cluster_3x2_comp[e,u1,u2,d1,d2]:=cluster_3x1_comp[1,u1,d1]*cluster_3x1[1,e,u2,d2];
+    println(varinfo(r"cluster_3x2_comp"))
+    println("Sparse rate of cluster_3x2_comp: "*string(length(nonzero_keys(cluster_3x2_comp))/prod(size(cluster_3x2_comp))))
+end
 
 
 
