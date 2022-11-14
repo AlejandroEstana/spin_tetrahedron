@@ -13,7 +13,7 @@ include("iPESS.jl")
 
 Random.seed!(1234)
 
-cluster_size="3x3x3"
+cluster_size="2x2x2"
 D=2;
 is_sparse=true;
 Bond_irrep="A";
@@ -94,9 +94,25 @@ elseif cluster_size=="3x3x3"
     comp=1;
     cluster_3x1_comp=cluster_3x1[comp,:,:,:];
     @tensor cluster_3x2_comp[e,u1,u2,d1,d2]:=cluster_3x1_comp[1,u1,d1]*cluster_3x1[1,e,u2,d2];
+    cluster_3x2_comp=reshape_tensor(cluster_3x2_comp,4,5);
+    cluster_3x2_comp=reshape_tensor(cluster_3x2_comp,2,3);
     println(varinfo(r"cluster_3x2_comp"))
     println("Sparse rate of cluster_3x2_comp: "*string(length(nonzero_keys(cluster_3x2_comp))/prod(size(cluster_3x2_comp))))
+    cluster_3x2_comp_dense=Array(cluster_3x2_comp);
+    println(varinfo(r"cluster_3x2_comp_dense"))
+
+    right_3x1_comp=cluster_3x1[:,comp,:,:];
+    @tensor cluster_3x3_comp[u1,u2,d1,d2]:=cluster_3x2_comp[e,u1,d1]*right_3x1_comp[e,u2,d2];
+    println("Sparse rate of cluster_3x3_comp: "*string(length(nonzero_keys(cluster_3x3_comp))/prod(size(cluster_3x3_comp))))
+    println(varinfo(r"cluster_3x3_comp"))
+    cluster_3x3_comp=reshape_tensor(cluster_3x3_comp,3,4);
+    cluster_3x3_comp=reshape_tensor(cluster_3x3_comp,1,2);
+    println(varinfo(r"cluster_3x3_comp"))
 end
+
+
+
+
 
 
 
